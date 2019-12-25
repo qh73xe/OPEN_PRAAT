@@ -91,6 +91,23 @@ def save_textgrid():
     return False
 
 
+@eel.expose
+def finish_praat(project, fileobj):
+    import json
+    global PROC
+    if PROC:
+        PROC.saveTextGrid()
+        PROC.close()
+        PROC = None
+        jpath = Path(project).joinpath("filelist.json")
+        LOGGER.info(str(jpath))
+        if jpath.exists():
+            with open(str(jpath), 'w') as f:
+                json.dump({"files": fileobj}, f, indent=4)
+        return True
+    return False
+
+
 def start_gui():
     LOGGER.info("START:GUI")
     template_dir = Path(__file__).parent.joinpath("template").resolve()

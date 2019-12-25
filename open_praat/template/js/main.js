@@ -11,6 +11,7 @@ new Vue({
     is_snackbar_show: false,
     projects: [],
     project: "",
+    project_file: "",
     filepath: [],
     current_files: {}
   },
@@ -29,6 +30,7 @@ new Vue({
     },
     set_project: function(text, val){
         this.project = text
+        this.project_file = val
         this.set_filepath(val)
         this.set_gui(val)
         this.tab = 1
@@ -93,6 +95,22 @@ new Vue({
             }
         })
     },
+    finish_praat: function(){
+        for (const i in this.filepath){
+            const file = this.filepath[i]
+            if (file.wav == this.current_files.wav){
+                this.filepath[i].fin = true
+            }
+        }
+        eel.finish_praat(this.project_file, this.filepath)((res) => {
+            if (res == false){
+                this.show_error("Praat is not running!!")
+            } else {
+                this.tab = 1
+                this.show_error(`SAVE ${this.current_files.tg}`)
+            }
+        })
+    }
   },
   mounted: function() {
     this.init_projects()

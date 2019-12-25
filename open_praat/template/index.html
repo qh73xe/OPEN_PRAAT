@@ -78,12 +78,25 @@
                       <v-list-item
                         v-for="(item, i) in filepath"
                         :key="i"
+                        v-if="!item.fin"
                         @click="open_praat(item.wav, item.tg)">
                         <v-list-item-content>
                           <v-list-item-title v-text="item.wav" />
                         </v-list-item-content>
                       </v-list-item>
-                      <v-divider />
+                    </v-list>
+
+                    <v-list subheader>
+                      <v-subheader>{{project}}:FINISHED</v-subheader>
+                      <v-list-item
+                        v-for="(item, i) in filepath"
+                        :key="i"
+                        v-if="item.fin"
+                        @click="open_praat(item.wav, item.tg)">
+                        <v-list-item-content>
+                          <v-list-item-title v-text="item.wav" />
+                        </v-list-item-content>
+                      </v-list-item>
                     </v-list>
                   </v-tab-item>
 
@@ -142,6 +155,15 @@
                         dark
                         @click="save_textgrid(item)">
                         SAVE
+                      </v-btn>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-btn
+                        block
+                        color="secondary"
+                        dark
+                        @click="finish_praat()">
+                        FINISH
                       </v-btn>
                     </v-col>
                   </v-tab-item>
